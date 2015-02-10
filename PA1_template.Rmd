@@ -8,15 +8,28 @@ output:
 
 ## Loading and preprocessing the data
 
-
+```{r}
+activity <- read.csv("activity.csv", colClasses = c("numeric", "factor" , "numeric"))
+activity$date <- as.Date(strptime(activity$date, "%Y-%m-%d"))
+```
 
 ## What is mean total number of steps taken per day?
 
+```{r}
+library(ggplot2)
+ggplot(activity, aes(x=date,y=steps)) + geom_histogram(stat="identity")
+tapply(activity$steps[!is.na(activity$steps)] , activity$date[!is.na(activity$steps)], mean) 
+tapply(activity$steps[!is.na(activity$steps)] , activity$date[!is.na(activity$steps)], median) 
+```
 
 
 ## What is the average daily activity pattern?
+```{r}
+a<-tapply(activity$steps[!is.na(activity$steps)] , activity$interval[!is.na(activity$steps)], mean)
+aggplot(activity, aes(x=a)) + geom_histogram(stat="identity")
+```
 
-
+[!is.na(activity$steps)]
 
 ## Imputing missing values
 
