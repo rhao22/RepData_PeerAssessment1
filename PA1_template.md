@@ -160,11 +160,11 @@ plot(means2_table$interval, means2_table$steps, type="l", ylab="Mean steps", xla
 
 ```r
 max = means2_table$interval[means2_table$steps==max(means2_table$steps)]
-paste("The 5-minute interval, on average across all the days in the dataset, that contains the maximum number of steps is :", max)
+paste("The 5-minute interval that contains the maximum number of steps is :", max)
 ```
 
 ```
-## [1] "The 5-minute interval, on average across all the days in the dataset, that contains the maximum number of steps is : 835"
+## [1] "The 5-minute interval that contains the maximum number of steps is : 835"
 ```
 
 ## Imputing missing values
