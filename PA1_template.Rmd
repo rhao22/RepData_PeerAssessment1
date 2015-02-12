@@ -54,14 +54,6 @@ means_table <- aggregate(list (steps=activity$steps), by = list (date=activity$d
 medians_table <- aggregate(list (steps=activity$steps), by = list (date=activity$date), median, na.rm=TRUE)
 means_table
 medians_table
-#activity$steps <- with(activity, ifelse(is.na(steps)), means_table$steps[means_table$data==date])
-#  
-#  
-#list_dates_when_na <- table(activity$date[is.na(activity$steps)])
-#with(list_dates_when_na, function(x) means_table$steps[means_table$date==as.Date(strptime(x, "%Y-%m-%d"))])
-#
-#with(list_dates_when_na, function(x) x)
-
 ```
 ## Are there differences in activity patterns between weekdays and weekends?
 ```{r}

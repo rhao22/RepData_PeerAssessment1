@@ -359,16 +359,6 @@ medians_table
 ## 60 2012-11-29     0
 ## 61 2012-11-30     0
 ```
-
-```r
-#activity$steps <- with(activity, ifelse(is.na(steps)), means_table$steps[means_table$data==date])
-#  
-#  
-#list_dates_when_na <- table(activity$date[is.na(activity$steps)])
-#with(list_dates_when_na, function(x) means_table$steps[means_table$date==as.Date(strptime(x, "%Y-%m-%d"))])
-#
-#with(list_dates_when_na, function(x) x)
-```
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```r

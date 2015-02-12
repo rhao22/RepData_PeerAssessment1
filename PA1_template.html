@@ -353,13 +353,6 @@ means_table</code></pre>
 ## 59 2012-11-28     0
 ## 60 2012-11-29     0
 ## 61 2012-11-30     0</code></pre>
-<pre class="r"><code>#activity$steps &lt;- with(activity, ifelse(is.na(steps)), means_table$steps[means_table$data==date])
-#  
-#  
-#list_dates_when_na &lt;- table(activity$date[is.na(activity$steps)])
-#with(list_dates_when_na, function(x) means_table$steps[means_table$date==as.Date(strptime(x, &quot;%Y-%m-%d&quot;))])
-#
-#with(list_dates_when_na, function(x) x)</code></pre>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
