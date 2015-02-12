@@ -20,6 +20,8 @@ library(ggplot2)
 ggplot(activity, aes(x=date,y=steps)) + geom_histogram(stat="identity")
 means_table <- aggregate(list (steps=activity$steps[!is.na(activity$steps)]), by = list (date=activity$date[!is.na(activity$steps)]), mean, na.rm=TRUE)
 medians_table <- aggregate(list (steps=activity$steps[!is.na(activity$steps)]), by = list (date=activity$date[!is.na(activity$steps)]), median, na.rm=TRUE)
+means_table <- aggregate(list (steps=activity$steps), by = list (date=activity$date), mean, na.rm=TRUE)
+medians_table <- aggregate(list (steps=activity$steps), by = list (date=activity$date), median, na.rm=TRUE)
 means_table
 medians_table
 ```
@@ -36,7 +38,22 @@ paste("The 5-minute interval that contains the maximum number of steps is :", ma
 
 ## Imputing missing values
 ```{r}
-#sapply(activity, function(x) sum(is.na(x)))
+sapply(activity, function(x) sum(is.na(x)))
+for (i in 1:nrow(activity)) {
+  if (is.na(activity[i, "steps"])) {
+    if (is.na(means_table$steps[means_table$date==activity[66, "date"]])) {
+      activity[i, "steps"] <- 0
+    } else {
+      activity[i, "steps"] <- means_table$steps[means_table$date==activity[66, "date"]]
+    }
+  }
+}
+sapply(activity, function(x) sum(is.na(x)))
+ggplot(activity, aes(x=date,y=steps)) + geom_histogram(stat="identity")
+means_table <- aggregate(list (steps=activity$steps), by = list (date=activity$date), mean, na.rm=TRUE)
+medians_table <- aggregate(list (steps=activity$steps), by = list (date=activity$date), median, na.rm=TRUE)
+means_table
+medians_table
 #activity$steps <- with(activity, ifelse(is.na(steps)), means_table$steps[means_table$data==date])
 #  
 #  
