@@ -8,7 +8,7 @@ output:
 
 ## Loading and preprocessing the data
 
-```{r}
+```{r, setoptions, echo = TRUE}
 activity <- read.csv("activity.csv", colClasses = c("numeric", "factor" , "numeric"))
 activity$date <- as.Date(strptime(activity$date, "%Y-%m-%d"))
 ```
@@ -18,21 +18,45 @@ activity$date <- as.Date(strptime(activity$date, "%Y-%m-%d"))
 ```{r}
 library(ggplot2)
 ggplot(activity, aes(x=date,y=steps)) + geom_histogram(stat="identity")
-tapply(activity$steps[!is.na(activity$steps)] , activity$date[!is.na(activity$steps)], mean) 
-tapply(activity$steps[!is.na(activity$steps)] , activity$date[!is.na(activity$steps)], median) 
+means_table <- aggregate(list (steps=activity$steps[!is.na(activity$steps)]), by = list (date=activity$date[!is.na(activity$steps)]), mean, na.rm=TRUE)
+medians_table <- aggregate(list (steps=activity$steps[!is.na(activity$steps)]), by = list (date=activity$date[!is.na(activity$steps)]), median, na.rm=TRUE)
+means_table
+medians_table
 ```
+
 
 
 ## What is the average daily activity pattern?
 ```{r}
-a<-tapply(activity$steps[!is.na(activity$steps)] , activity$interval[!is.na(activity$steps)], mean)
-aggplot(activity, aes(x=a)) + geom_histogram(stat="identity")
+means2_table <- aggregate(list (steps=activity$steps[!is.na(activity$steps)]), by = list (interval=activity$interval[!is.na(activity$steps)]), mean, na.rm=TRUE)
+plot(means2_table$interval, means2_table$steps, type="l", ylab="Mean steps", xlab="Interval")
+max = means2_table$interval[means2_table$steps==max(means2_table$steps)]
+paste("The 5-minute interval, on average across all the days in the dataset, that contains the maximum number of steps is :", max)
 ```
 
-[!is.na(activity$steps)]
-
 ## Imputing missing values
+```{r}
+#sapply(activity, function(x) sum(is.na(x)))
+#activity$steps <- with(activity, ifelse(is.na(steps)), means_table$steps[means_table$data==date])
+#  
+#  
+#list_dates_when_na <- table(activity$date[is.na(activity$steps)])
+#with(list_dates_when_na, function(x) means_table$steps[means_table$date==as.Date(strptime(x, "%Y-%m-%d"))])
+#
+#with(list_dates_when_na, function(x) x)
 
-
-
+```
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r}
+activity$day <- as.POSIXlt(activity$date)$wday
+subset_weekdays <- sub <- subset(activity, day <= 5)
+subset_weekends <- sub <- subset(activity, day >= 6)
+means2_weekdays <- aggregate(list (steps=subset_weekdays$steps[!is.na(subset_weekdays$steps)]), 
+      by = list (interval=subset_weekdays$interval[!is.na(subset_weekdays$steps)]), mean, na.rm=TRUE)
+means2_weekends <- aggregate(list (steps=subset_weekends$steps[!is.na(subset_weekends$steps)]),
+      by = list (interval=subset_weekends$interval[!is.na(subset_weekends$steps)]), mean, na.rm=TRUE)
+par(mfrow = c(2,1)) 
+plot(means2_weekdays$interval, means2_weekdays$steps, type="l", ylab="Number of steps", xlab="Interval", main="Weekdays")
+plot(means2_weekends$interval, means2_weekends$steps, type="l", ylab="Number of steps", xlab="Interval", main="Weekends")
+```
+
